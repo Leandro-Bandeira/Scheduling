@@ -12,6 +12,7 @@ class FCFS{
         
         void sortForArrivalTime();
         void execute();
+        std::vector<Process>& getProcess(){return this->process;}
 
 
     private:
