@@ -40,6 +40,6 @@ void Sjf::printResults(){
     resume_turnAround = resume_turnAround / process.size();
     resume_wait = resume_wait / process.size();
 
-    std::cout << "SJF: " << std::fixed << std::setprecision(1) << resume_completion << " " << resume_turnAround << " " << resume_wait;   
+    std::cout << "SJF: " << std::fixed << std::setprecision(1) << resume_completion << " " << resume_turnAround << " " << resume_wait << endl;   
     //printar valores médios de tempo de retorno, tempo de resposta e tempo de espera (1 casa decimal)
 }
