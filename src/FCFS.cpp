@@ -6,15 +6,24 @@ void FCFS::execute(){
     sortForArrivalTime();
     
     for (int i = 0; i < process.size(); i++){
+        
         if(i == 0){
-            process[i].completionTime = process[i].duration;
+            process[i].completionTime = process[i].duration + process[i].arrivalTime;
         
     
         }
         else{
-            process[i].completionTime = process[i-1].completionTime + process[i].duration;
+            // Se o instante que o processo i chega for maior do que o tempo de término do anterior
+            // Então o instante de término de i será dado por
+            if (process[i].arrivalTime > process[i-1].completionTime){
+                process[i].completionTime = process[i].arrivalTime + process[i].duration; 
+            }else{
+                process[i].completionTime = process[i-1].completionTime + process[i].duration;
+            }
+            
             
         }
+        std::cout << i << "Completion time: " << process[i].completionTime << "\n";
         process[i].turnAroundTime = process[i].completionTime - process[i].arrivalTime;
         process[i].waitTime = process[i].turnAroundTime - process[i].duration;
     }
