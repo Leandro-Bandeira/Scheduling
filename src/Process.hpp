@@ -8,13 +8,13 @@ class Process{
             :arrivalTime(arrivalTime), duration(duration) {}
         
         int getArrivalTime() const {return arrivalTime;}
-        
+        int getDuration() const {return duration;}
  
         int arrivalTime; 
-        int duration;   
+        int duration;        //duração do processo na cpu
         int completionTime;
-        int turnAroundTime; // Tempo de resposta
-        int waitTime; // Tempo de espera
+        int turnAroundTime;  // Tempo de resposta
+        int waitTime;        // Tempo de espera
     private:
 };
 
