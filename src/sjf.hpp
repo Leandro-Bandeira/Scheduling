@@ -10,9 +10,11 @@ class Sjf{
         Sjf(std::vector<Process> &process):process(process) {}
         std::vector<Process>& getProcess(){return this->process;}
         void execute();
-        void Sjf::sortForShortestTime();
+        
 
     private:
+        void Sjf::sortForShortestTime();
+        void Sjf::printResults();
         std::vector<Process> process;
         
 

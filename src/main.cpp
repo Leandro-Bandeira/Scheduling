@@ -4,6 +4,7 @@
 #include "../utils/InstanceReader.hpp"
 #include "Process.hpp"
 #include "FCFS.hpp"
+#include "sjf.hpp"
 
 
 int main(int argc, char** argv){  
@@ -34,7 +35,11 @@ int main(int argc, char** argv){
 
     // Imprime os tempos médios de conclusão e espera  
     std::cout << "completion_time_avg: " << (double)total_aroundTime/numberProcess << "\n";  
-    std::cout << "wait time avg: " << (double)total_waitTime/numberProcess << "\n";  
+    std::cout << "wait time avg: " << (double)total_waitTime/numberProcess << "\n"; 
+    
+    //-----------------------------------sjf----------------------------------------
+    Sjf obj_sjf(process);
+    obj_sjf.execute();
 
     return 0; // Retorna 0 indicando que o programa foi executado com sucesso  
 }
