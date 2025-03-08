@@ -10,10 +10,12 @@ class Process{
         int getArrivalTime() const {return arrivalTime;}
         int getDuration() const {return duration;}
  
-        int arrivalTime; 
+        int arrivalTime;
+        int startTime; // Tempo que inicia 
         int duration;        //duração do processo na cpu
+        int responseTime;    // Tempo de resposta
         int completionTime;
-        int turnAroundTime;  // Tempo de resposta
+        int turnAroundTime;  // Tempo de retorno
         int waitTime;        // Tempo de espera
     private:
 };

@@ -19,6 +19,5 @@ void InstanceReader::readInstance(char *file_path){
         Process p1(arrivalTime, duration);
         process.push_back(p1);
     }
-    
 }
 

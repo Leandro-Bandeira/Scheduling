@@ -13,8 +13,8 @@ class Sjf{
         
 
     private:
-        void Sjf::sortForShortestTime();
-        void Sjf::printResults();
+        void sortForShortestTime();
+        void printResults();
         std::vector<Process> process;
         
 
