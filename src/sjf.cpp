@@ -33,11 +33,8 @@ void Sjf::execute(){
             int proc_done = 0;
             for(Process* p : ready_proc){
                 (*p).completionTime = (current_time + (*p).duration) - (*p).arrivalTime;
-                cout << "comp time do p com duracao " << (*p).duration << ": " <<  (*p).completionTime << endl;
                 (*p).turnAroundTime = current_time - (*p).arrivalTime;
-                cout << "turn do p com duracao " << (*p).duration << ": " <<  (*p).turnAroundTime << endl;
                 (*p).waitTime = (*p).turnAroundTime;
-                cout << "waittime do p com duracao" << (*p).duration << ": " <<  (*p).waitTime << endl;
                 current_time += (*p).duration;
                 proc_done++;
 

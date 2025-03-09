@@ -5,6 +5,7 @@
 #include "Process.hpp"
 #include "FCFS.hpp"
 #include "sjf.hpp"
+#include "rr.hpp"
 
 
 int main(int argc, char** argv){  
@@ -27,6 +28,9 @@ int main(int argc, char** argv){
     //-----------------------------------sjf----------------------------------------
     Sjf obj_sjf(process);
     obj_sjf.execute();
+
+    RR obj_rr(process);
+    obj_rr.execute();
 
     return 0; // Retorna 0 indicando que o programa foi executado com sucesso  
 }

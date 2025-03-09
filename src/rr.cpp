@@ -10,44 +10,64 @@ using namespace std;
 
 void RR::execute(){
 
-    queue<Process*> ready_proc;
-    int current_time = 0;
+    sortForArrivalTime();
+    queue<int> ready_proc;
     int index = 0;
+    double current_time = 0;
+    int n = process.size();
 
-    while (index < process.size() or !ready_proc.empty()) {
+    while (index < n or (ready_proc.empty() != 1) ) {
         // Adiciona processos que chegaram ao tempo atual na fila
-        while (index < process.size() && process[index].arrivalTime <= current_time) {
-            ready_proc.push(&process[index]);
+        while (index < n && process[index].arrivalTime <= current_time) {
+            if(process[index].duration_extra > 0)
+                ready_proc.push(index);
+
             index++;
         }
-
-        if (!ready_proc.empty()) {
-            Process* current_p = ready_proc.front();
-            ready_proc.pop();
-
-            if((*current_p).duration_extra == (*current_p).duration){   //tempo de resposta só é calculado com a 1 execucao
-                (*current_p).turnAroundTime = current_time - (*current_p).arrivalTime;
-            }
-
-            // Executa o processo por um tempo limitado pelo quantum
-            int time_exec = min(QUANTUM, (*current_p).duration_extra);
-            current_time += time_exec;
-            (*current_p).duration_extra -= time_exec;
-
-            if ((*current_p).duration_extra > 0) {
-                ready_proc.push(current_p);
-            }else{
-                 //isso significa que a tarefa foi terminada
-                (*current_p).completionTime = (current_time + (*current_p).duration) - (*current_p).arrivalTime;
-                (*current_p).waitTime = (*current_p).completionTime - (*current_p).duration;
-            
-            }
-        } else {
+    
+        if (ready_proc.empty()) {
+            // Se não há processos prontos, avança no tempo
             current_time++;
+            continue;
         }
+    
+        int current_p = ready_proc.front();
+        ready_proc.pop();
+    
+        // Marca o start no momento em que o processo é executado pela primeira vez
+        if (process[current_p].start == -1) {   
+            // Tempo de resposta só é calculado com a 1ª execução
+            process[current_p].start = current_time;  // Marca o tempo de início
+        }
+    
+        // Executa o processo por um tempo limitado pelo quantum
+        double time_exec = min(double(QUANTUM), process[current_p].duration_extra);
+        current_time = current_time + time_exec;
+        process[current_p].duration_extra =  process[current_p].duration_extra - time_exec;
+    
+        if (process[current_p].duration_extra > 0) {
+            ready_proc.push(current_p);
+        } else {
+            // Isso significa que a tarefa foi terminada
+            process[current_p].finish = current_time;
+        }      
+    }
+        
+    for(int i = 0; i < process.size(); i++){
+        
+        process[i].responseTime = process[i].start - process[i].arrivalTime;
+        process[i].turnAroundTime = process[i].finish - process[i].arrivalTime;
+        process[i].waitTime = process[i].turnAroundTime - process[i].duration;
     }
 
     printResults();
+}
+  
+void RR::sortForArrivalTime(){
+    std::sort(process.begin(), process.end(), [](const Process& a, const Process& b){
+        return a.getArrivalTime() < b.getArrivalTime();
+    });
+
 }
 
 
@@ -56,17 +76,17 @@ void RR::printResults(){
     double resume_completion = 0;
     double resume_turnAround = 0;
     double resume_wait = 0;
-    for(Process p : process){
+    for(int i = 0; i <  process.size(); i++){
         
-        resume_completion += p.completionTime;
-        resume_turnAround += p.turnAroundTime;
-        resume_wait += p.waitTime;
+        resume_completion += process[i].responseTime;
+        resume_turnAround += process[i].turnAroundTime;
+        resume_wait += process[i].waitTime;
     }
 
-    resume_completion = resume_completion / process.size(); 
-    resume_turnAround = resume_turnAround / process.size();
-    resume_wait = resume_wait / process.size();
+    resume_completion = double(resume_completion / process.size()); 
+    resume_turnAround = double(resume_turnAround / process.size());
+    resume_wait = double(resume_wait / process.size());
 
-    std::cout << "RR: " << std::fixed << std::setprecision(1) << resume_completion << " " << resume_turnAround << " " << resume_wait << std::endl;   
+    std::cout << "RR: " << resume_turnAround << " " << resume_completion << " " << resume_wait << std::endl;   
     //printar valores médios de tempo de retorno, tempo de resposta e tempo de espera (1 casa decimal)
 }
