@@ -15,16 +15,10 @@ int main(int argc, char** argv){
 
     std::vector<Process> process = reader.getProcess(); // Obtém a lista de processos lidos  
 
-    // Itera sobre a lista de processos e imprime o tempo de chegada e duração de cada um  
-    for(Process p: process){  
-        std::cout << p.arrivalTime << "||" << p.duration << "\n";  
-    }  
-
     //-----------------------------------FCFS---------------------------------------- 
     FCFS fcfs(process);  
     fcfs.execute(); // Executa o algoritmo FCFS  
 
-  
     //-----------------------------------sjf----------------------------------------
     Sjf obj_sjf(process);
     obj_sjf.execute();

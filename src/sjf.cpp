@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>  
 #include <vector>  
+#include <sstream>
 
 using namespace std;
 
@@ -94,6 +95,19 @@ void Sjf::printResults(){
     resume_turnAround = resume_turnAround / process.size(); //media do tempo de resposta
     resume_wait = resume_wait / process.size(); //media do tempo de espera
 
-    std::cout << "SJF: " << std::fixed << std::setprecision(1) << resume_completion << " " << resume_turnAround << " " << resume_wait << endl;   
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << resume_completion;
+    std::string str_completion = ss.str();
+    std::stringstream ss2;
+    ss2 << std::fixed << std::setprecision(1) << resume_turnAround;
+    std::string str_turnaround = ss2.str();
+    std::stringstream ss3;
+    ss3 << std::fixed << std::setprecision(1) << resume_wait;
+    std::string str_wait = ss3.str();
+    std::replace(str_completion.begin(), str_completion.end(), '.', ',');
+    std::replace(str_turnaround.begin(), str_turnaround.end(), '.', ',');
+    std::replace(str_wait.begin(), str_wait.end(), '.', ',');
+
+    std::cout << "SJF: " << std::fixed << std::setprecision(1) << str_completion << " " << str_turnaround << " " << str_wait << endl;   
     //printar valores médios de tempo de retorno, tempo de resposta e tempo de espera (1 casa decimal)
 }

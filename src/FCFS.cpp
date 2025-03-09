@@ -55,6 +55,19 @@ void FCFS::printResults(){
     resume_turnAround = resume_turnAround / process.size();
     resume_wait = resume_wait / process.size();
 
-    std::cout << "FCFS: " << std::fixed << std::setprecision(1) << resume_turnAround << " " << resume_response << " " << resume_wait << std::endl;   
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(1) << resume_turnAround;
+    std::string str_turnAround = ss.str();
+    std::stringstream ss2;
+    ss2 << std::fixed << std::setprecision(1) << resume_response;
+    std::string str_response = ss2.str();
+    std::stringstream ss3;
+    ss3 << std::fixed << std::setprecision(1) << resume_wait;
+    std::string str_wait = ss3.str();
+    std::replace(str_turnAround.begin(), str_turnAround.end(), '.', ',');
+    std::replace(str_response.begin(), str_response.end(), '.', ',');
+    std::replace(str_wait.begin(), str_wait.end(), '.', ',');
+
+    std::cout << "FCFS: " << std::fixed << std::setprecision(1) << str_turnAround << " " << str_response << " " << str_wait << std::endl;   
     //printar valores médios de tempo de retorno, tempo de resposta e tempo de espera (1 casa decimal)
 }
