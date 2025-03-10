@@ -10,53 +10,56 @@
 using namespace std;
 
 void RR::execute(){
-
     sortForArrivalTime();
     queue<int> ready_proc;
     int index = 0;
     double current_time = 0;
     int n = process.size();
 
-    while (index < n or (ready_proc.empty() != 1) ) {
+    while (index < n || !ready_proc.empty()) {
         // Adiciona processos que chegaram ao tempo atual na fila
         while (index < n && process[index].arrivalTime <= current_time) {
-            if(process[index].duration_extra > 0){
+            if (process[index].duration_extra > 0) {
                 ready_proc.push(index);
-                index++;
             }
-                
+            index++;
         }
-    
+
         if (ready_proc.empty()) {
-            // Se não há processos prontos, avança no tempo
-            current_time++;
+            // Se não há processos prontos, avança no tempo para o próximo processo disponível
+            current_time = process[index].arrivalTime;
             continue;
         }
-    
+
         int current_p = ready_proc.front();
         ready_proc.pop();
-    
+
         // Marca o start no momento em que o processo é executado pela primeira vez
         if (process[current_p].start == -1) {   
-            // Tempo de resposta só é calculado com a 1ª execução
-            process[current_p].start = current_time;  // Marca o tempo de início
+            process[current_p].start = current_time;
         }
-    
+
         // Executa o processo por um tempo limitado pelo quantum
         double time_exec = min(double(QUANTUM), process[current_p].duration_extra);
-        current_time = current_time + time_exec;
-        process[current_p].duration_extra =  process[current_p].duration_extra - time_exec;
-    
+        current_time += time_exec;
+        process[current_p].duration_extra -= time_exec;
+
+        // Adiciona processos que chegaram enquanto o processo estava sendo executado
+        while (index < n && process[index].arrivalTime <= current_time) {
+            if (process[index].duration_extra > 0) {
+                ready_proc.push(index);
+            }
+            index++;
+        }
+
         if (process[current_p].duration_extra > 0) {
             ready_proc.push(current_p);
         } else {
-            // Isso significa que a tarefa foi terminada
             process[current_p].finish = current_time;
-        }      
+        }
     }
-        
-    for(int i = 0; i < process.size(); i++){
-        
+    
+    for (int i = 0; i < process.size(); i++) {
         process[i].turnAroundTime = process[i].finish - process[i].arrivalTime;
         process[i].responseTime = process[i].start - process[i].arrivalTime;
         process[i].waitTime = process[i].turnAroundTime - process[i].duration;
